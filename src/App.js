@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Nav from "./Components/Nav";
+import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+import Puestos from "./Components/MainComponents/Puestos";
+import EmpleadosPuestos from "./Components/MainComponents/EmpleadosPuestos";
+import Personas from "./Components/MainComponents/Personas";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<Router>
+			<Nav />
+			<Switch>
+				<Route path="/" component={Home} exact />
+				<Route path="/personas/" component={Personas} />
+				<Route path="/puestos/" component={Puestos} />
+				<Route path="/empleados/" component={EmpleadosPuestos} />
+			</Switch>
+		</Router>
+	);
 }
+
+const Home = () => {
+	return (
+		<div>
+			<h1>^ Selecciona Uno ^</h1>
+		</div>
+	);
+};
 
 export default App;

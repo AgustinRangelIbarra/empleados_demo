@@ -1,0 +1,25 @@
+nav {
+	background:  hsl(220, 13%, 18%);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	min-height: 10vh;
+	color: #eeeeee;
+}
+
+.nav-links {
+	color: white;
+	width: 50%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.nav-link-item{
+  color: #eeeeee;
+  text-decoration: none;
+  padding: 0 3rem;
+}
