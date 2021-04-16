@@ -1,20 +1,23 @@
 import "./App.css";
 import Nav from "./Components/Nav";
-import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Puestos from "./Components/MainComponents/Puestos";
 import EmpleadosPuestos from "./Components/MainComponents/EmpleadosPuestos";
-import Personas from "./Components/MainComponents/Personas";
+import Personas from './Components/MainComponents/Personas'
+import PeopleState from './Components/Context/PeopleContext/PeopleState'
 
 function App() {
 	return (
 		<Router>
-			<Nav />
-			<Switch>
-				<Route path="/" component={Home} exact />
-				<Route path="/personas/" component={Personas} />
-				<Route path="/puestos/" component={Puestos} />
-				<Route path="/empleados/" component={EmpleadosPuestos} />
-			</Switch>
+			<PeopleState>
+				<Nav />
+				<Switch>
+					<Route path="/" component={Home} exact />
+					<Route path="/personas/" component={Personas} />
+					<Route path="/puestos/" component={Puestos} />
+					<Route path="/empleados/" component={EmpleadosPuestos} />
+				</Switch>
+			</PeopleState>
 		</Router>
 	);
 }
@@ -22,7 +25,7 @@ function App() {
 const Home = () => {
 	return (
 		<div>
-			<h1>^ Selecciona Uno ^</h1>
+			<h1>^ Home Page ^</h1>
 		</div>
 	);
 };
