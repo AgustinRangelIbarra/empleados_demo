@@ -3,13 +3,13 @@ import Nav from "./Components/Nav";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Puestos from "./Components/MainComponents/Puestos";
 import EmpleadosPuestos from "./Components/MainComponents/EmpleadosPuestos";
-import Personas from './Components/MainComponents/Personas'
-import PeopleState from './Components/Context/PeopleContext/PeopleState'
+import Personas from "./Components/MainComponents/Personas";
+import PeopleState from "./Components/Context/PeopleContext/PeopleState";
 
 function App() {
 	return (
-		<Router>
-			<PeopleState>
+		<PeopleState>
+			<Router>
 				<Nav />
 				<Switch>
 					<Route path="/" component={Home} exact />
@@ -17,8 +17,8 @@ function App() {
 					<Route path="/puestos/" component={Puestos} />
 					<Route path="/empleados/" component={EmpleadosPuestos} />
 				</Switch>
-			</PeopleState>
-		</Router>
+			</Router>
+		</PeopleState>
 	);
 }
 

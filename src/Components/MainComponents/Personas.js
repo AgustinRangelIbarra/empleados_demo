@@ -32,7 +32,7 @@ const Personas = () => {
 			id: new Date().getTime(),
 		};
 		addPerson(newPerson);
-		// console.log(newPerson);
+		console.log(newPerson);
 		reset();
 	};
 
@@ -88,27 +88,7 @@ const Personas = () => {
 				<Col>
 					<div>
 						<h3 className="mt-5">Detalles de la Persona</h3>
-						<Form className="d-flex flex-column mx-5" onSubmit={handleSubmit}>
-							<Row>
-								<Col>
-{/* 									<Form.Group>
-										<Form.Label>ID:</Form.Label>
-										<Form.Control
-											type="text"
-											readOnly
-											required
-											placeholder="ID automático"
-										/>
-									</Form.Group> */}
-								</Col>
-								<Col>
-									<Form.Group>
-										<Form.Label>Fecha de Nacimiento:</Form.Label>
-										<Form.Control type="date" required onChange={handleChange} />
-									</Form.Group>
-								</Col>
-							</Row>
-							<br />
+						{/* 						<Form className="d-flex flex-column mx-5" onSubmit={handleSubmit}>
 							<Row>
 								<Col>
 									<Form.Group>
@@ -123,12 +103,61 @@ const Personas = () => {
 									</Form.Group>
 								</Col>
 							</Row>
+							<Row>
+								<Col>
+									<Form.Group>
+										<Form.Label>ID:</Form.Label>
+										<Form.Control type="text" readOnly placeholder="ID automático" />
+									</Form.Group>
+								</Col>
+								<Col>
+									<Form.Group>
+										<Form.Label>Fecha de Nacimiento:</Form.Label>
+										<Form.Control type="date" required onChange={handleChange} />
+									</Form.Group>
+								</Col>
+							</Row>
 							<Row className="d-flex flex-row justify-content-center align-items-center mt-5">
-								<Button variant="dark" size="lg" style={{ margin: "auto" }}>
+								<Button type="submit" variant="dark" size="lg" style={{ margin: "auto" }}>
 									Agregar Registro
 								</Button>
 							</Row>
-						</Form>
+						</Form> */}
+						<form onSubmit={handleSubmit}>
+							<div className="mb-3">
+								<label className="form-label">Nombre</label>
+								<input
+									onChange={handleChange}
+									name="nombre"
+									type="text"
+									value={nombre}
+									className="form-control"
+								/>
+							</div>
+							<div className="mb-3">
+								<label className="form-label">Apellido</label>
+								<input
+									onChange={handleChange}
+									name="apellido"
+									type="text"
+									value={apellido}
+									className="form-control"
+								/>
+							</div>
+							<div className="mb-3">
+								<label className="form-label">Fecha de Nacimiento</label>
+								<input
+									onChange={handleChange}
+									name="fecha"
+									type="date"
+									value={fecha}
+									className="form-control"
+								/>
+							</div>
+							<div className="d-flex justify-content-center align-items-center">
+								<input type="submit" value="Agregar" className="btn btn-dark mx-2 " />
+							</div>
+						</form>
 					</div>
 				</Col>
 			</Row>
