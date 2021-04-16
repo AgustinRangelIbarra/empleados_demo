@@ -19,7 +19,7 @@ const Personas = () => {
 	const { state, addPerson } = contextPeople;
 
 	useEffect(() => {
-		ls.setItem("personas", JSON.stringify(state));
+		ls.setItem("listPersonas", JSON.stringify(state));
 	}, [state]);
 
 	const handleSubmit = (e) => {
@@ -31,10 +31,15 @@ const Personas = () => {
 			...valueForms,
 			id: new Date().getTime(),
 		};
-		addPerson(newPerson);
 		console.log(newPerson);
+		addPerson(newPerson);
 		reset();
 	};
+
+	const handleEliminar = () => {
+		console.log(state);
+		// const idRegistro = state.findIndex()
+	}
 
 	return (
 		<Container>
@@ -70,12 +75,18 @@ const Personas = () => {
 										<td>{registro.fecha}</td>
 										<td>
 											<div className="d-flex flex-column justify-content-center ">
-												<Button variant="warning" size="sm" type="submit">
-													Editar
-												</Button>
-												<Button variant="danger" size="sm" type="submit">
-													Eliminar
-												</Button>
+												<input
+													type="submit"
+													value="Editar"
+													className="btn btn-warning btn-sm"
+													onClick={() => console.log('xd')}
+												/>
+												<input
+													type="submit"
+													value="Eliminar"
+													className="btn btn-danger btn-sm"
+													onClick={handleEliminar}
+												/>
 											</div>
 										</td>
 									</tr>
@@ -88,41 +99,7 @@ const Personas = () => {
 				<Col>
 					<div>
 						<h3 className="mt-5">Detalles de la Persona</h3>
-						{/* 						<Form className="d-flex flex-column mx-5" onSubmit={handleSubmit}>
-							<Row>
-								<Col>
-									<Form.Group>
-										<Form.Label>Nombre</Form.Label>
-										<Form.Control type="text" required onChange={handleChange} />
-									</Form.Group>
-								</Col>
-								<Col>
-									<Form.Group>
-										<Form.Label>Apellido</Form.Label>
-										<Form.Control type="text" required onChange={handleChange} />
-									</Form.Group>
-								</Col>
-							</Row>
-							<Row>
-								<Col>
-									<Form.Group>
-										<Form.Label>ID:</Form.Label>
-										<Form.Control type="text" readOnly placeholder="ID automático" />
-									</Form.Group>
-								</Col>
-								<Col>
-									<Form.Group>
-										<Form.Label>Fecha de Nacimiento:</Form.Label>
-										<Form.Control type="date" required onChange={handleChange} />
-									</Form.Group>
-								</Col>
-							</Row>
-							<Row className="d-flex flex-row justify-content-center align-items-center mt-5">
-								<Button type="submit" variant="dark" size="lg" style={{ margin: "auto" }}>
-									Agregar Registro
-								</Button>
-							</Row>
-						</Form> */}
+
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
 								<label className="form-label">Nombre</label>

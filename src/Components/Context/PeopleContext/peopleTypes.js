@@ -1,3 +1,3 @@
-export const ADD_PERSON = "ADD";
+export const ADD_PERSON = "inserPersonas";
 
 

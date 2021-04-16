@@ -7,7 +7,7 @@ const PeopleState = ( props ) => {
 
 	const ls = localStorage;
 
-	const initialState = () => JSON.parse(ls.getItem('personas')) || [];
+	const initialState = () => JSON.parse(ls.getItem('listPersonas')) || [];
 
 	const [state, dispatch] = useReducer(peopleReducer, [], initialState);
 
