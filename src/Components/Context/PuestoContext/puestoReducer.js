@@ -6,7 +6,7 @@ export const puestoReducer = ( state = [], action ) => {
 			return [...state, action.payload];
 
 		case DELETE_PUESTO:
-			return [...state, action.payload];
+			return state.filter( registro => registro.id !== action.payload);
 	
 		default:
 			return state;

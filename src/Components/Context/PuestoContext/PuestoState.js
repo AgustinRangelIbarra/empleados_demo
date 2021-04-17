@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { puestoContext } from "./puestoContext";
 import { puestoReducer } from './puestoReducer'
-import { ADD_PUESTO } from "./puestoTypes";
+import { ADD_PUESTO, DELETE_PUESTO } from "./puestoTypes";
 
 const PuestoState = ( props ) => {
 
@@ -11,7 +11,7 @@ const PuestoState = ( props ) => {
 
 	const [state, dispatch] = useReducer(puestoReducer, [], initialState);
 
-	const addPuesto = (newPuesto) => {
+	const insertPuesto = (newPuesto) => {
 		const action = {
 			type: ADD_PUESTO,
 			payload: newPuesto
@@ -19,8 +19,16 @@ const PuestoState = ( props ) => {
 		dispatch(action);
 	}
 
+	const deletePuesto = (id) => {
+		const action = {
+			type: DELETE_PUESTO,
+			payload: id
+		}
+		dispatch(action);
+	}
+
 	return (
-		<puestoContext.Provider value={{ state, addPuesto}}>
+		<puestoContext.Provider value={{ state, insertPuesto, deletePuesto}}>
 			{
 				props.children
 			}

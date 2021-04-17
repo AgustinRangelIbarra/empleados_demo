@@ -10,7 +10,7 @@ const Puestos = () => {
 	const { puesto } = valueForms;
 
 	const contextPuesto = useContext(puestoContext);
-	const { state, addPuesto } = contextPuesto;
+	const { state, insertPuesto, deletePuesto} = contextPuesto;
 
 	useEffect(() => {
 		ls.setItem("listPuestos", JSON.stringify(state));
@@ -26,7 +26,7 @@ const Puestos = () => {
 			id: new Date().getTime(),
 		};
 		console.log(newPuesto);
-		addPuesto(newPuesto);
+		insertPuesto(newPuesto);
 		reset();
 	};
 
@@ -73,7 +73,7 @@ const Puestos = () => {
 														type="submit"
 														value={registro.id}
 														className="btn btn-danger btn-sm"
-														// onClick={handleEliminar}
+														onClick={() => deletePuesto(registro.id)}
 													>
 														Eliminar
 													</button>
