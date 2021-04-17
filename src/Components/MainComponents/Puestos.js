@@ -1,7 +1,35 @@
-import React from 'react'
-import { Container, Col, Row, Form, Button, Table  } from 'react-bootstrap'
+import { useEffect, useContext } from "react";
+import { Container, Col, Row, Form, Button, Table } from "react-bootstrap";
+import { useForms } from "../../hooks/useForms";
+import { puestoContext } from "../Context/PuestoContext/puestoContext";
 
-export default function Puestos() {
+const Puestos = () => {
+	const ls = localStorage;
+
+	const { valueForms, reset, handleChange } = useForms({puesto: ""});
+	const { puesto } = valueForms;
+
+	const contextPuesto = useContext(puestoContext);
+	const { state, addPuesto } = contextPuesto;
+
+	useEffect(() => {
+		ls.setItem("listPuestos", JSON.stringify(state));
+	}, [state]);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		if (puesto.trim().length < 1) return;
+
+		const newPuesto = {
+			...valueForms,
+			id: new Date().getTime(),
+		};
+		console.log(newPuesto);
+		addPuesto(newPuesto);
+		reset();
+	};
+
 	return (
 		<Container>
 			<Row>
@@ -21,77 +49,67 @@ export default function Puestos() {
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th>Nombre</th>
+									<th>Puesto</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-								</tr>
+								{
+									state.map( (registro) => (
+										<tr>
+											<td>{registro.id}</td>
+											<td>{registro.puesto}</td>
+											<td>
+												<div className="d-flex flex-column justify-content-center ">
+													<button
+														type="submit"
+														value="Editar"
+														className="btn btn-warning btn-sm"
+														onClick={() => console.log("xd")}
+													>
+														Editar
+													</button>
+													<button
+														type="submit"
+														value={registro.id}
+														className="btn btn-danger btn-sm"
+														// onClick={handleEliminar}
+													>
+														Eliminar
+													</button>
+												</div>
+											</td>
+										</tr>
+									))
+								}
 							</tbody>
 						</Table>
 					</div>
 				</Col>
 
-				<Col className="">
-					<div className="btn-add-registro d-flex">
-						<Button
-							variant="dark"
-							className="ps-5 pe-5 mt-5 mb-4"
-							size="lg"
-							style={{ margin: "auto" }}
-						>
-							Agregar Registro
-						</Button>
-					</div>
-
+				<Col>
 					<div>
-						<hr />
-						<h3>Detalle del Puesto</h3>
-						<Form className="d-flex flex-column mx-5">
-							<Row>
-								<Col>
-									<Form.Group>
-										<Form.Label>ID:</Form.Label>
-										<Form.Control
-											type="text"
-											required
-											readOnly
-											placeholder="Id Asignado Automaticamente"
-										/>
-									</Form.Group>
-								</Col>
-								<Col>
-									<Form.Group>
-										<Form.Label>Nombre del Puesto:</Form.Label>
-										<Form.Control type="text" required />
-									</Form.Group>
-								</Col>
-							</Row>
-							<Row className="d-flex flex-row justify-content-center align-items-center mt-5">
-								<Button variant="primary" size="sm" type="submit" className="btn-form">
-									Agregar
-								</Button>
-								<Button variant="warning" size="sm" type="submit" className="btn-form">
-									Editar
-								</Button>
-								<Button variant="danger" size="sm" type="submit" className="btn-form">
-									Eliminar
-								</Button>
-							</Row>
-						</Form>
+						<h3 className="mt-5">Detalles del Puesto</h3>
+						<form onSubmit={handleSubmit}>
+							<div className="mb-3">
+								<label className="form-label">Puesto</label>
+								<input
+									onChange={handleChange}
+									name="puesto"
+									type="text"
+									value={puesto}
+									className="form-control"
+								/>
+							</div>
+							<div className="d-flex justify-content-center align-items-center">
+								<input type="submit" value="Agregar" className="btn btn-dark mx-2 mb-5" />
+							</div>
+						</form>
 					</div>
 				</Col>
 			</Row>
 		</Container>
 	);
 }
+
+export default Puestos;

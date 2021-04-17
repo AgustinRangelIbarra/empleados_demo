@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { peopleContext } from "./peopleContext";
 import { peopleReducer } from './peopleReducer'
-import { ADD_PERSON } from "./peopleTypes";
+import { ADD_PERSON, DELETE_PERSON } from "./peopleTypes";
 
 const PeopleState = ( props ) => {
 
@@ -19,8 +19,16 @@ const PeopleState = ( props ) => {
 		dispatch(action);
 	}
 
+	const deletePerson = (id) => {
+		const action = {
+			type: DELETE_PERSON,
+			payload: id
+		}
+		dispatch(action);
+	}
+
 	return (
-		<peopleContext.Provider value={{ state, addPerson}}>
+		<peopleContext.Provider value={{ state, addPerson, deletePerson}}>
 			{
 				props.children
 			}

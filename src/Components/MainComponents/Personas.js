@@ -16,7 +16,7 @@ const Personas = () => {
 	const { nombre, apellido, fecha } = valueForms;
 
 	const contextPeople = useContext(peopleContext);
-	const { state, addPerson } = contextPeople;
+	const { state, addPerson, deletePerson } = contextPeople;
 
 	useEffect(() => {
 		ls.setItem("listPersonas", JSON.stringify(state));
@@ -36,9 +36,8 @@ const Personas = () => {
 		reset();
 	};
 
-	const handleEliminar = () => {
-		console.log(state);
-		// const idRegistro = state.findIndex()
+	const handleFilter = () => {
+		// this.state.map( (registro) => registro.id )
 	}
 
 	return (
@@ -52,6 +51,7 @@ const Personas = () => {
 							required
 							placeholder="Filtrar elementos"
 							className="mb-5 mt-5"
+							onSubmit={handleFilter}
 						/>
 					</Form>
 
@@ -67,30 +67,32 @@ const Personas = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{state.map((registro) => (
-									<tr>
-										<td>{registro.id}</td>
-										<td>{registro.nombre}</td>
-										<td>{registro.apellido}</td>
-										<td>{registro.fecha}</td>
-										<td>
-											<div className="d-flex flex-column justify-content-center ">
-												<input
-													type="submit"
-													value="Editar"
-													className="btn btn-warning btn-sm"
-													onClick={() => console.log('xd')}
-												/>
-												<input
-													type="submit"
-													value="Eliminar"
-													className="btn btn-danger btn-sm"
-													onClick={handleEliminar}
-												/>
-											</div>
-										</td>
-									</tr>
-								))}
+								{
+									state.map( (registro) => (
+										<tr>
+											<td>{registro.id}</td>
+											<td>{registro.nombre}</td>
+											<td>{registro.apellido}</td>
+											<td>{registro.fecha}</td>
+											<td>
+												<div className="d-flex flex-column justify-content-center ">
+													<button
+														type="submit"
+														value="Editar"
+														className="btn btn-warning btn-sm"
+														onClick={() => console.log("xd")}
+													>Editar</button>
+													<button
+														type="submit"
+														value={registro.id}
+														className="btn btn-danger btn-sm"
+														onClick={() => deletePerson(registro.id)}
+													>Eliminar</button>
+												</div>
+											</td>
+										</tr>
+									))
+								}
 							</tbody>
 						</Table>
 					</div>
@@ -132,7 +134,7 @@ const Personas = () => {
 								/>
 							</div>
 							<div className="d-flex justify-content-center align-items-center">
-								<input type="submit" value="Agregar" className="btn btn-dark mx-2 " />
+								<input type="submit" value="Agregar" className="btn btn-dark mx-2 mb-5" />
 							</div>
 						</form>
 					</div>
