@@ -11,7 +11,7 @@ const PeopleState = ( props ) => {
 
 	const [state, dispatch] = useReducer(peopleReducer, [], initialState);
 
-	const addPerson = (newPerson) => {
+	const insertPerson = (newPerson) => {
 		const action = {
 			type: ADD_PERSON,
 			payload: newPerson
@@ -28,7 +28,7 @@ const PeopleState = ( props ) => {
 	}
 
 	return (
-		<peopleContext.Provider value={{ state, addPerson, deletePerson}}>
+		<peopleContext.Provider value={{ state, insertPerson, deletePerson}}>
 			{
 				props.children
 			}

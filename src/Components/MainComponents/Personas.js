@@ -16,7 +16,7 @@ const Personas = () => {
 	const { nombre, apellido, fecha } = valueForms;
 
 	const contextPeople = useContext(peopleContext);
-	const { state, addPerson, deletePerson } = contextPeople;
+	const { state, insertPerson, deletePerson } = contextPeople;
 
 	useEffect(() => {
 		ls.setItem("listPersonas", JSON.stringify(state));
@@ -32,7 +32,7 @@ const Personas = () => {
 			id: new Date().getTime(),
 		};
 		console.log(newPerson);
-		addPerson(newPerson);
+		insertPerson(newPerson);
 		reset();
 	};
 

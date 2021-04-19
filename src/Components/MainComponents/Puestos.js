@@ -1,34 +1,63 @@
-import { useEffect, useContext } from "react";
-import { Container, Col, Row, Form, Button, Table } from "react-bootstrap";
+import { useEffect, useContext, useState, useRef } from "react";
+import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { useForms } from "../../hooks/useForms";
 import { puestoContext } from "../Context/PuestoContext/puestoContext";
+import TablaRegistros from '../Table';
 
 const Puestos = () => {
 	const ls = localStorage;
 
-	const { valueForms, reset, handleChange } = useForms({puesto: ""});
+	const { valueForms, reset, handleChange } = useForms({ puesto: "" });
 	const { puesto } = valueForms;
 
 	const contextPuesto = useContext(puestoContext);
-	const { state, insertPuesto, deletePuesto} = contextPuesto;
+	const { state, insertPuesto, updatePuesto, getPuesto } = contextPuesto;
+
+	const [toggleUpdateValues, setToggleUpdateValues] = useState(0);
+	const inputPuesto = useRef();
 
 	useEffect(() => {
 		ls.setItem("listPuestos", JSON.stringify(state));
 	}, [state]);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+/* 	useEffect(() => {
+		if (puesto !== null) {
+			insertPuesto(updatePuesto.puesto);
+			console.log(updatePuesto);
+		} else {
+			insertPuesto("");
+		}
+	}, [updatePuesto]); */
 
-		if (puesto.trim().length < 1) return;
+	const handleEditar = (id) => {
+		setToggleUpdateValues(() => !toggleUpdateValues);
+		// getPuesto(id);
 
-		const newPuesto = {
-			...valueForms,
-			id: new Date().getTime(),
-		};
-		console.log(newPuesto);
-		insertPuesto(newPuesto);
-		reset();
+		// const valueInput = inputPuesto.current;
 	};
+
+		const handleSubmit = (e) => {
+			e.preventDefault();
+
+			if (puesto.trim().length < 1) return;
+
+			if (!toggleUpdateValues) {
+				const newPuesto = {
+					...valueForms,
+					id: new Date().getTime(),
+				};
+				console.log(`AGREGAR: ${JSON.stringify(newPuesto)}`);
+				insertPuesto(newPuesto);
+			} else if (toggleUpdateValues) {
+				console.log("update");
+				const newValues = {
+					...valueForms,
+				};
+				// updatePuesto(newValues);
+			}
+			reset();
+			setToggleUpdateValues(0);
+		};
 
 	return (
 		<Container>
@@ -43,48 +72,9 @@ const Puestos = () => {
 							className="mb-5 mt-5"
 						/>
 					</Form>
+					
+					<TablaRegistros />
 
-					<div>
-						<Table striped bordered hover size="sm">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Puesto</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									state.map( (registro) => (
-										<tr>
-											<td>{registro.id}</td>
-											<td>{registro.puesto}</td>
-											<td>
-												<div className="d-flex flex-column justify-content-center ">
-													<button
-														type="submit"
-														value="Editar"
-														className="btn btn-warning btn-sm"
-														onClick={() => console.log("xd")}
-													>
-														Editar
-													</button>
-													<button
-														type="submit"
-														value={registro.id}
-														className="btn btn-danger btn-sm"
-														onClick={() => deletePuesto(registro.id)}
-													>
-														Eliminar
-													</button>
-												</div>
-											</td>
-										</tr>
-									))
-								}
-							</tbody>
-						</Table>
-					</div>
 				</Col>
 
 				<Col>
@@ -95,6 +85,7 @@ const Puestos = () => {
 								<label className="form-label">Puesto</label>
 								<input
 									onChange={handleChange}
+									ref={inputPuesto}
 									name="puesto"
 									type="text"
 									value={puesto}
@@ -102,7 +93,20 @@ const Puestos = () => {
 								/>
 							</div>
 							<div className="d-flex justify-content-center align-items-center">
-								<input type="submit" value="Agregar" className="btn btn-dark mx-2 mb-5" />
+								{toggleUpdateValues ? (
+									<input
+										type="submit"
+										value="Actualizar Valores"
+										className="btn btn-primary mx-2 mb-5"
+										onClick={() => updatePuesto}
+									/>
+								) : (
+									<input
+										type="submit"
+										value="Agregar"
+										className="btn btn-dark mx-2 mb-5"
+									/>
+								)}
 							</div>
 						</form>
 					</div>
@@ -110,6 +114,6 @@ const Puestos = () => {
 			</Row>
 		</Container>
 	);
-}
+};
 
 export default Puestos;
