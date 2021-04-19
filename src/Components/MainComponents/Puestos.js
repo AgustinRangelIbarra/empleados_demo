@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState, useRef } from "react";
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import { Container, Col, Row, Form } from "react-bootstrap";
 import { useForms } from "../../hooks/useForms";
 import { puestoContext } from "../Context/PuestoContext/puestoContext";
-import TablaRegistros from '../Table';
+import Tabla from "../Tabla";
 
 const Puestos = () => {
 	const ls = localStorage;
@@ -11,53 +11,41 @@ const Puestos = () => {
 	const { puesto } = valueForms;
 
 	const contextPuesto = useContext(puestoContext);
-	const { state, insertPuesto, updatePuesto, getPuesto } = contextPuesto;
+	const { state, insertPuesto, editPuesto, updatePuesto } = contextPuesto;
 
-	const [toggleUpdateValues, setToggleUpdateValues] = useState(0);
-	const inputPuesto = useRef();
 
 	useEffect(() => {
 		ls.setItem("listPuestos", JSON.stringify(state));
 	}, [state]);
 
-/* 	useEffect(() => {
-		if (puesto !== null) {
-			insertPuesto(updatePuesto.puesto);
-			console.log(updatePuesto);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		if (puesto.trim().length < 1) return;
+
+		if ( !editPuesto ) {
+			const newPuesto = {
+				...valueForms,
+				id: new Date().getTime(),
+			};
+			console.log(valueForms)
+			console.log(`AGREGAR: ${JSON.stringify(newPuesto)}`);
+			insertPuesto(newPuesto);
+			// console.log(newPuesto);
+
 		} else {
-			insertPuesto("");
+			const updatedPuesto = {
+				...valueForms,
+				id: editPuesto.id
+			}
+			console.log(updatedPuesto);
+			updatePuesto(updatedPuesto);
 		}
-	}, [updatePuesto]); */
-
-	const handleEditar = (id) => {
-		setToggleUpdateValues(() => !toggleUpdateValues);
-		// getPuesto(id);
-
-		// const valueInput = inputPuesto.current;
+		reset();
 	};
 
-		const handleSubmit = (e) => {
-			e.preventDefault();
 
-			if (puesto.trim().length < 1) return;
-
-			if (!toggleUpdateValues) {
-				const newPuesto = {
-					...valueForms,
-					id: new Date().getTime(),
-				};
-				console.log(`AGREGAR: ${JSON.stringify(newPuesto)}`);
-				insertPuesto(newPuesto);
-			} else if (toggleUpdateValues) {
-				console.log("update");
-				const newValues = {
-					...valueForms,
-				};
-				// updatePuesto(newValues);
-			}
-			reset();
-			setToggleUpdateValues(0);
-		};
 
 	return (
 		<Container>
@@ -72,20 +60,20 @@ const Puestos = () => {
 							className="mb-5 mt-5"
 						/>
 					</Form>
-					
-					<TablaRegistros />
 
+					<Tabla />
+					{/* <h6>{toggleUpdateValues}</h6> */}
 				</Col>
 
 				<Col>
 					<div>
 						<h3 className="mt-5">Detalles del Puesto</h3>
+
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
 								<label className="form-label">Puesto</label>
 								<input
 									onChange={handleChange}
-									ref={inputPuesto}
 									name="puesto"
 									type="text"
 									value={puesto}
@@ -93,20 +81,21 @@ const Puestos = () => {
 								/>
 							</div>
 							<div className="d-flex justify-content-center align-items-center">
-								{toggleUpdateValues ? (
-									<input
-										type="submit"
-										value="Actualizar Valores"
-										className="btn btn-primary mx-2 mb-5"
-										onClick={() => updatePuesto}
-									/>
-								) : (
-									<input
-										type="submit"
-										value="Agregar"
-										className="btn btn-dark mx-2 mb-5"
-									/>
-								)}
+								{
+									editPuesto ? (
+										<input
+											type="submit"
+											value="Actualizar Valores"
+											className="btn btn-primary mx-2 mb-5"
+										/>
+									) : (
+										<input
+											type="submit"
+											value="Agregar Registro"
+											className="btn btn-dark mx-2 mb-5"
+										/>
+									)
+								}
 							</div>
 						</form>
 					</div>
