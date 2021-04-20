@@ -1,13 +1,11 @@
-import { useEffect, useContext } from "react";
-import { Container, Col, Row, Button, Table, Form } from "react-bootstrap";
+import { useContext } from "react";
+import { Container, Col, Row, Table, Form } from "react-bootstrap";
 import { useForms } from "../../hooks/useForms";
 import { peopleContext } from "../Context/PeopleContext/peopleContext";
 
 import "../styles/Persona.css";
 
 const Personas = () => {
-	const ls = localStorage;
-
 	const { valueForms, reset, handleChange } = useForms({
 		nombre: "",
 		apellido: "",
@@ -16,29 +14,37 @@ const Personas = () => {
 	const { nombre, apellido, fecha } = valueForms;
 
 	const contextPeople = useContext(peopleContext);
-	const { state, insertPerson, deletePerson } = contextPeople;
-
-	useEffect(() => {
-		ls.setItem("listPersonas", JSON.stringify(state));
-	}, [state]);
+	const {
+		state,
+		insertPerson,
+		deletePerson,
+		updatePerson,
+		editPersona,
+		getPerson,
+	} = contextPeople;
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (nombre.trim().length < 1 || apellido.trim().length < 1 || fecha.trim().length < 1) return;
+		if (!nombre || !apellido || !fecha) return;
 
-		const newPerson = {
-			...valueForms,
-			id: new Date().getTime(),
-		};
-		console.log(newPerson);
-		insertPerson(newPerson);
+		if (!editPersona) {
+			const newPerson = {
+				...valueForms,
+				id: new Date().getTime(),
+			};
+			console.warn(`AGREGAR: ${newPerson}`);
+			insertPerson(newPerson);
+		} else {
+			const updatedPersona = {
+				...valueForms,
+				id: editPersona.id,
+			};
+			console.warn(`EDITAR: ${JSON.stringify(updatedPersona)}`);
+			updatePerson(updatedPersona);
+		}
 		reset();
 	};
-
-	const handleFilter = () => {
-		// this.state.map( (registro) => registro.id )
-	}
 
 	return (
 		<Container>
@@ -51,24 +57,23 @@ const Personas = () => {
 							required
 							placeholder="Filtrar elementos"
 							className="mb-5 mt-5"
-							onSubmit={handleFilter}
 						/>
 					</Form>
 
 					<div>
-						<Table striped bordered hover size="sm">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Nombre</th>
-									<th>Apellido</th>
-									<th>Fecha de Nacimiento</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									state.map( (registro) => (
+						{state.length ? (
+							<Table striped bordered hover size="sm">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Nombre</th>
+										<th>Apellido</th>
+										<th>Fecha de Nacimiento</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									{state.map((registro) => (
 										<tr>
 											<td>{registro.id}</td>
 											<td>{registro.nombre}</td>
@@ -77,25 +82,37 @@ const Personas = () => {
 											<td>
 												<div className="d-flex flex-column justify-content-center ">
 													<button
+														key={registro.id}
 														type="submit"
 														value="Editar"
 														className="btn btn-warning btn-sm"
-														onClick={() => console.log("xd")}
-													>Editar</button>
+														onClick={() => getPerson(registro.id)}
+													>
+														Editar
+													</button>
 													<button
 														type="submit"
-														value={registro.id}
+														value="Eliminar"
 														className="btn btn-danger btn-sm"
 														onClick={() => deletePerson(registro.id)}
-													>Eliminar</button>
+													>
+														Eliminar
+													</button>
 												</div>
 											</td>
 										</tr>
-									))
-								}
-							</tbody>
-						</Table>
+									))}
+								</tbody>
+							</Table>
+						) : (
+							<div className="">
+								<hr />
+								<h5 style={{ textAlign: "center" }}>No Hay Registros Aún</h5>
+								<hr />
+							</div>
+						)}
 					</div>
+					{/* <h3>{JSON.stringify(editPersona)}</h3> */}
 				</Col>
 
 				<Col>
@@ -134,7 +151,19 @@ const Personas = () => {
 								/>
 							</div>
 							<div className="d-flex justify-content-center align-items-center">
-								<input type="submit" value="Agregar" className="btn btn-dark mx-2 mb-5" />
+								{editPersona ? (
+									<input
+										type="submit"
+										value="Actualizar Valores"
+										className="btn btn-primary mx-2 mb-5"
+									/>
+								) : (
+									<input
+										type="submit"
+										value="Agregar Registro"
+										className="btn btn-dark mx-2 mb-5"
+									/>
+								)}
 							</div>
 						</form>
 					</div>

@@ -10,17 +10,21 @@ import PuestoState from "./Components/Context/PuestoContext/PuestoState";
 function App() {
 	return (
 		<PeopleState>
-			<PuestoState>
-				<Router>
-					<Nav />
-					<Switch>
-						<Route path="/" component={Home} exact />
-						<Route path="/personas/" component={Personas} />
-						<Route path="/puestos/" component={Puestos} />
-						<Route path="/empleados/" component={EmpleadosPuestos} />
-					</Switch>
-				</Router>
-			</PuestoState>
+		<PuestoState>
+			
+			
+			<Router>
+				<Nav />
+				<Switch>
+					<Route path="/" component={Home} exact />
+					<Route path="/personas/" component={Personas} />
+					<Route path="/puestos/" component={Puestos} />
+					<Route path="/empleados/" component={EmpleadosPuestos} />
+				</Switch>
+			</Router>
+
+			
+		</PuestoState>
 		</PeopleState>
 	);
 }

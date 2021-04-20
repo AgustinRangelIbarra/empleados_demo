@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 import { puestoContext } from "./puestoContext";
 import { puestoReducer } from "./puestoReducer";
 import { ADD_PUESTO, DELETE_PUESTO, GET_PUESTO, UPDATE_PUESTO } from "./puestoTypes";
@@ -11,6 +11,10 @@ const PuestoState = (props) => {
 	const [state, dispatch] = useReducer(puestoReducer, [], initialState);
 
 	const [editPuesto, setEditPuesto] = useState(null);
+
+	useEffect(() => {
+		ls.setItem("listPuestos", JSON.stringify(state));
+	}, [state]);
 
 	const insertPuesto = (newPuesto) => {
 		const action = {
@@ -33,7 +37,7 @@ const PuestoState = (props) => {
 			type: UPDATE_PUESTO,
 			payload: newValues,
 		};
-		// console.log(action);
+		console.log(action);
 		dispatch(action);
 		setEditPuesto(null);
 	};
@@ -52,7 +56,6 @@ const PuestoState = (props) => {
 				deletePuesto,
 				updatePuesto,
 				getPuesto,
-				updatePuesto,
 				editPuesto,
 			}}
 		>

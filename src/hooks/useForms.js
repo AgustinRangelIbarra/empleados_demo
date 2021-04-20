@@ -1,9 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { puestoContext } from "../Components/Context/PuestoContext/puestoContext";
+import { peopleContext } from "../Components/Context/PeopleContext/peopleContext";
 
 export const useForms = (initialState = {}) => {
 	const contextPuesto = useContext(puestoContext);
 	const { editPuesto } = contextPuesto;
+
+	const contextPersona = useContext(peopleContext);
+	const { editPersona } = contextPersona;
 
 	const [valueForms, setValueForms] = useState(initialState);
 
@@ -16,6 +20,15 @@ export const useForms = (initialState = {}) => {
 		}
 	}, [editPuesto]);
 
+	useEffect(() => {
+		if(editPersona){
+			setValueForms(editPersona);
+		} else {
+			setValueForms('');
+		}
+	}, [editPersona])
+
+
 	const handleChange = (e) => {
 		setValueForms({
 			...valueForms,
@@ -26,6 +39,7 @@ export const useForms = (initialState = {}) => {
 	const reset = () => {
 		setValueForms(initialState);
 	};
+
 
 	return {
 		valueForms,

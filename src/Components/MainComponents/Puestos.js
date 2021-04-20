@@ -1,22 +1,16 @@
-import { useEffect, useContext, useState, useRef } from "react";
+import { useContext } from "react";
 import { Container, Col, Row, Form } from "react-bootstrap";
 import { useForms } from "../../hooks/useForms";
 import { puestoContext } from "../Context/PuestoContext/puestoContext";
 import Tabla from "../Tabla";
 
 const Puestos = () => {
-	const ls = localStorage;
 
 	const { valueForms, reset, handleChange } = useForms({ puesto: "" });
 	const { puesto } = valueForms;
 
 	const contextPuesto = useContext(puestoContext);
-	const { state, insertPuesto, editPuesto, updatePuesto } = contextPuesto;
-
-
-	useEffect(() => {
-		ls.setItem("listPuestos", JSON.stringify(state));
-	}, [state]);
+	const { insertPuesto, editPuesto, updatePuesto } = contextPuesto;
 
 
 	const handleSubmit = (e) => {
